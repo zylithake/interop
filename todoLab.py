@@ -37,13 +37,20 @@ for line in lineData:
     print(line)
     email = bool(re.search("@",line))
     print("name  :  " + str((namePat.match(line)).group()))
-    
+    #find indexes to trim
+    cutBeg = (namePat.match(line)).span()[0]
+    cutEnd = (namePat.match(line)).span()[1]
+    index = cutEnd
+    lineNew = line
 
+    #trim string to find task
+    lineNew = lineNew[0: cutBeg:] + lineNew[cutEnd + 1::]
+    print(lineNew)
     if email:
         tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((emailPat.findall(line))[0]),'task':''})
     else:
         tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((phonePat.findall(line))[0]),'task':''})
-
+    
     
 #remove all data that is not task, store rest as task
 
@@ -61,6 +68,6 @@ for line in lineData:
 
 #output formatted dict to new file-------------------------------------------------------------------------------------------------------------------------------------
 
-print(tasklist)
+
 
 
