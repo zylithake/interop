@@ -1,7 +1,7 @@
 #Z Akerele
 
 #sources: 1:https://stackoverflow.com/questions/24237524/how-to-split-a-python-string-on-new-line-characters  2:https://stackoverflow.com/questions/6576962/python-regular-expressions-return-true-false
-#3: https://www.programiz.com/python-programming/regex 
+#3: https://www.programiz.com/python-programming/regex 4:https://pythonexamples.org/python-re-sub/ 
 
 import re
 import codecs
@@ -34,23 +34,32 @@ tasklist = []
 #put regex results in dict-----------------------------------------------------------------------------------------------------------------------------------------
 
 for line in lineData:
-    print(line)
+    lineNew = line
     email = bool(re.search("@",line))
     print("name  :  " + str((namePat.match(line)).group()))
-    #find indexes to trim
-    cutBeg = (namePat.match(line)).span()[0]
-    cutEnd = (namePat.match(line)).span()[1]
-    index = cutEnd
-    lineNew = line
+    # trim : name 
+    lineNew = re.sub(namePat,'',lineNew)
+    # trim : date
+    lineNew = re.sub(datePat,'',lineNew)
+    #trim: contact
+    if email:
+        lineNew = re.sub(emailPat,'',lineNew)
+    else:
+        lineNew = re.sub(phonePat,'',lineNew)
+    
+   
 
-    #trim string to find task
-    lineNew = lineNew[0: cutBeg:] + lineNew[cutEnd + 1::]
+    
+        
+  
     print(lineNew)
+    
     if email:
         tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((emailPat.findall(line))[0]),'task':''})
     else:
         tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((phonePat.findall(line))[0]),'task':''})
     
+  
     
 #remove all data that is not task, store rest as task
 
