@@ -5,6 +5,7 @@
 
 import re
 import codecs
+import string
 
 #open files, import todo----------------------------------------------------------------------------------------------------------------------------------------------
 data = codecs.open("todo.txt", 'r', "utf-8")
@@ -29,12 +30,13 @@ rawData = data.read()
 lineData = rawData.splitlines()
 tasklist = []
 
-
+cleanPat  = re.compile(r"([0-9,\\(-])",re.I)
 #run regex on each line
 #put regex results in dict-----------------------------------------------------------------------------------------------------------------------------------------
 
 for line in lineData:
     lineNew = line
+    
     email = bool(re.search("@",line))
     print("name  :  " + str((namePat.match(line)).group()))
     # trim : name 
@@ -47,20 +49,21 @@ for line in lineData:
     else:
         lineNew = re.sub(phonePat,'',lineNew)
     
+    #clean
+    lineNew = re.sub(cleanPat,'',lineNew)
    
-
-    
+    #lineNew = task
         
   
-    print(lineNew)
+   
     
     if email:
-        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((emailPat.findall(line))[0]),'task':''})
+        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((emailPat.findall(line))[0]),'task':lineNew})
     else:
-        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((phonePat.findall(line))[0]),'task':''})
+        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((phonePat.findall(line))[0]),'task':lineNew})
     
   
-    
+print(str(tasklist)) 
 #remove all data that is not task, store rest as task
 
     
