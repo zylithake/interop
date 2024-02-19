@@ -5,7 +5,7 @@
 
 import re
 import codecs
-import string
+
 
 #open files, import todo----------------------------------------------------------------------------------------------------------------------------------------------
 data = codecs.open("todo.txt", 'r', "utf-8")
@@ -37,8 +37,10 @@ cleanPat  = re.compile(r"([0-9,\\(-])",re.I)
 for line in lineData:
     lineNew = line
     
+    #remove all data that is not task, store rest as task-----------------------------------------------------
+
     email = bool(re.search("@",line))
-    print("name  :  " + str((namePat.match(line)).group()))
+    
     # trim : name 
     lineNew = re.sub(namePat,'',lineNew)
     # trim : date
@@ -56,25 +58,27 @@ for line in lineData:
         
   
    
-    
+    #put data into list of dicts
     if email:
-        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((emailPat.findall(line))[0]),'task':lineNew})
+        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][2]) + '-' + str((datePat.findall(line))[0][1]) + '-' +str((datePat.findall(line))[0][0]), 'contact':str((emailPat.findall(line))[0]),'task':lineNew})
     else:
-        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][1]) + '-' + str((datePat.findall(line))[0][0]) + '-' +str((datePat.findall(line))[0][2]), 'contact':str((phonePat.findall(line))[0]),'task':lineNew})
+        tasklist.append({'name':str((namePat.match(line)).group()),'date':str((datePat.findall(line))[0][2]) + '-' + str((datePat.findall(line))[0][1]) + '-' +str((datePat.findall(line))[0][0]), 'contact':str((phonePat.findall(line))[0]),'task':lineNew})
     
   
-print(str(tasklist)) 
-#remove all data that is not task, store rest as task
 
-    
-    
-
-
-
-
-
-
+        
 #sort dict by date
+Sortedlist = sorted(tasklist, key=lambda d: d['date']) 
+
+
+#print formatted dict to txt file
+for person in Sortedlist:
+    formattedData.writelines('\n'+person['date'] + ': ' + person['task'] + '\n' + person['name'] + ',' + person['contact'] + '\n')
+
+
+
+
+
 
 
 
