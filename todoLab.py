@@ -36,7 +36,7 @@ cleanPat  = re.compile(r"([0-9,\\(-])",re.I)
 
 for line in lineData:
     lineNew = line
-    
+
     #remove all data that is not task, store rest as task-----------------------------------------------------
 
     email = bool(re.search("@",line))
@@ -82,7 +82,6 @@ for person in Sortedlist:
 
 
 
-#output formatted dict to new file-------------------------------------------------------------------------------------------------------------------------------------
 
 
 
