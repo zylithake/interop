@@ -32,4 +32,8 @@ cleanDat = re.sub(scenePat,r"= \1 =\n{\2}",cleanDat)
 dirPat = re.compile(r"\<i\>([ a-z]+)\<\/i\>",re.IGNORECASE)
 cleanDat = re.sub(dirPat,r"[\1]",cleanDat)
 
+#replace directions
+speechPat = re.compile(r'\<a name="speech[0-9]+"\>\<b\>([a-z]+)\<\/b\>\<\/a\>',re.IGNORECASE)
+cleanDat = re.sub(speechPat,r"\1: ",cleanDat)
+
 print(cleanDat)
