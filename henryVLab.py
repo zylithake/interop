@@ -51,4 +51,4 @@ cleanDat = re.sub(linePat,'',cleanDat)
 
 
 outputData.write(cleanDat)
-print(cleanDat)
+
