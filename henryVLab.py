@@ -14,7 +14,7 @@ def trim(my_str,sub):
 
 
 fileData =  codecs.open('hvraw.txt', 'r', "utf-8")
-
+outputData = codecs.open('HenryV.txt','w',"utf-8")
 rawData = fileData.read()
 
 #trim header
@@ -24,8 +24,12 @@ cleanDat = trim(rawData,"</table>")
 actPat = re.compile(r"(\<h3\>)(ACT[ a-z]*)(\<\/h3\>)",re.IGNORECASE)
 cleanDat = re.sub(actPat,r"== \2 ==",cleanDat)
 
+#replace prologues
+actPat = re.compile(r"(\<h3\>)(prologue)(\<\/h3\>)",re.IGNORECASE)
+cleanDat = re.sub(actPat,r"= \2 =",cleanDat)
+
 #replace Scenes
-scenePat = re.compile(r"\<h3\>(scene [ a-z]+)\.([\.a-z \-\']+)\<\/h3\>",re.IGNORECASE)
+scenePat = re.compile(r"\<h3\>(scene [ a-z]+)\.([\.a-z \-\':,]+)\<\/h3\>",re.IGNORECASE)
 cleanDat = re.sub(scenePat,r"= \1 =\n{\2}",cleanDat)
 
 #replace directions
@@ -41,4 +45,10 @@ linePat = re.compile(r"\<a name=\"[0-9.]+\"\>([a-z ,.!?':;-]+)\<\/a\>",re.IGNORE
 cleanDat = re.sub(linePat,r"\t\1",cleanDat)
 
 
+#replace all other html
+linePat = re.compile(r"\<[/a-z]+\>",re.IGNORECASE)
+cleanDat = re.sub(linePat,'',cleanDat)
+
+
+outputData.write(cleanDat)
 print(cleanDat)
