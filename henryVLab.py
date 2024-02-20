@@ -28,4 +28,8 @@ cleanDat = re.sub(actPat,r"== \2 ==",cleanDat)
 scenePat = re.compile(r"\<h3\>(scene [ a-z]+)\.([\.a-z \-\']+)\<\/h3\>",re.IGNORECASE)
 cleanDat = re.sub(scenePat,r"= \1 =\n{\2}",cleanDat)
 
+#replace directions
+dirPat = re.compile(r"\<i\>([ a-z]+)\<\/i\>",re.IGNORECASE)
+cleanDat = re.sub(dirPat,r"[\1]",cleanDat)
+
 print(cleanDat)
